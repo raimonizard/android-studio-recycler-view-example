@@ -13,16 +13,14 @@ import androidx.navigation.NavController
 import com.example.andoidstudio_recyclerview_demo.viewmodel.getPokemonList
 
 @Composable
-fun LazyColumnPokedex(navController: NavController, modifier: Modifier){
+fun LazyColumnPokedex(modifier: Modifier){
     LazyColumn(verticalArrangement = Arrangement.spacedBy(4.dp),
             modifier = Modifier
                 .padding(vertical = 30.dp)
                 .fillMaxHeight()
         ) {
-        items(getPokemonList()){ pokemon ->
-            PokemonItem(pokemon = pokemon){
-                navController.navigate(Routes.DetailScreen.createreoute(pokemon.name))
-            }
+        items(getPokemonList()){
+            PokemonItem(pokemon = it)
         }
     }
 }

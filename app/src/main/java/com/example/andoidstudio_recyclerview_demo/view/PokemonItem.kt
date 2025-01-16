@@ -22,11 +22,10 @@ import androidx.compose.ui.unit.dp
 import com.example.andoidstudio_recyclerview_demo.model.Pokemon
 
 @Composable
-fun PokemonItem(pokemon: Pokemon, onSelectedItem: (String) -> Unit) {
+fun PokemonItem(pokemon: Pokemon) {
     Card(border = BorderStroke(2.dp, Color.LightGray),
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onSelectedItem(pokemon.name) }
     ) {
         Row {
             Image(
