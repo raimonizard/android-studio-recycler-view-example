@@ -1,4 +1,4 @@
-# Android App with LiveData and MVVM
+# Android App with RecyclerView -> Lazy* Components
 ## Android Studio Version
 Android Studio Ladybug Feature Drop | 2024.2.2
 
@@ -26,14 +26,13 @@ dependencies {
 ```
 
 # Screenshot
-<img src="app/src/main/res/drawable/basic_capture_1.png" alt="App activity" width="300"/>
+## branch basic:
+<img src="https://github.com/user-attachments/assets/9b25399c-658b-4df3-990c-93ba6da23c6d" alt="App activity" width="300"/>
+
 
 ---
 # References
-- Example quotes: https://cursokotlin.com/mvvm-en-android-con-kotlin-livedata-y-view-binding-android-architecture-components/
-- Example user: https://medium.com/@kevinhomorales/usa-mvvm-en-tus-apps-con-kotlin-2d337c619431
-- Official doc about ViewModel: https://developer.android.com/topic/libraries/architecture/viewmodel?hl=es-419#jetpack-compose_1
-
----
-# Official Course
-https://developer.android.com/courses/jetpack-compose/course?gclid=Cj0KCQiAhomtBhDgARIsABcaYym0EHsDfz7aJLKopqZ3VUztWyIg5x_16ED13T62_WZfqsGLYQQicKMaAvExEALw_wcB&gclsrc=aw.ds
+- [Android Developers](https://developer.android.com/develop/ui/compose/lists?hl=es-419)
+- [Medium](https://medium.com/@vivekbansal19/optimizing-lazy-list-in-jetpack-compose-best-practices-8da06a5dd472)
+- [Medium](https://medium.com/@GiftWorthSharing/make-component-below-lazy-column-row-in-jetpack-compose-dfb91596030e)
+- [Droidcon](https://www.droidcon.com/2024/01/03/mastering-lazy-lists-in-jetpack-compose-with-data-classes-and-mvi/)
