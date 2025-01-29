@@ -26,7 +26,7 @@ class MainActivity : ComponentActivity() {
                     .fillMaxSize()
                 ) { innerPadding ->
                     val navController = rememberNavController() // Inicialitza el NavController
-                    LazyColumnPokedex(Modifier.padding(innerPadding), navController)
+                    MyAppNavHost(Modifier.padding(innerPadding), navController)
                 }
             }
         }

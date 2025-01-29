@@ -1,2 +1,0 @@
-package com.example.andoidstudio_recyclerview_demo
-
