@@ -36,7 +36,7 @@ fun PokemonItem(pokemon: Pokemon, onSelectedItem: (String) -> Unit) {
                 contentDescription = pokemon.name,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .padding(8.dp)
+                    .padding(10.dp)
                     .fillMaxHeight()
                     .background(pokemon.type.color)
             )
