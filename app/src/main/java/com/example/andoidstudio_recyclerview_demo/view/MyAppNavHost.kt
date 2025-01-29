@@ -29,10 +29,10 @@ fun MyAppNavHost(modifier: Modifier, navController: NavHostController) {
                 )
             ) {backStackEntry ->
             DetailScreen(
-                modifier,
                 navController,
                 // Per si de cas el nom del pokémon és buit, li passarem una cadena de caràcters buida al cridar la view
-                backStackEntry.arguments?.getString("pokemonName").orEmpty()
+                backStackEntry.arguments?.getString("pokemonName").orEmpty(),
+                modifier
             )
         }
     }

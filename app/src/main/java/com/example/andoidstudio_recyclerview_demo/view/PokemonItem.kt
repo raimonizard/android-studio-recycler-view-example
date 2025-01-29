@@ -3,6 +3,7 @@ package com.example.andoidstudio_recyclerview_demo.view
 import android.content.ClipData.Item
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,7 +24,7 @@ import com.example.andoidstudio_recyclerview_demo.model.Pokemon
 
 @Composable
 fun PokemonItem(pokemon: Pokemon, onSelectedItem: (String) -> Unit) {
-    Card(border = BorderStroke(2.dp, Color.LightGray),
+    Card(border = BorderStroke(2.dp, pokemon.type.color),
         modifier = Modifier
             .fillMaxWidth()
             // Afegir propietat clickable i li definim el comportament
@@ -37,6 +38,7 @@ fun PokemonItem(pokemon: Pokemon, onSelectedItem: (String) -> Unit) {
                 modifier = Modifier
                     .padding(8.dp)
                     .fillMaxHeight()
+                    .background(pokemon.type.color)
             )
             Column{
                 Text(
@@ -44,7 +46,7 @@ fun PokemonItem(pokemon: Pokemon, onSelectedItem: (String) -> Unit) {
                     fontSize = MaterialTheme.typography.bodyLarge.fontSize,
                     fontWeight = FontWeight.Bold
                 )
-                Text(text = pokemon.type)
+                Text(text = pokemon.type.name)
             }
         }
     }
