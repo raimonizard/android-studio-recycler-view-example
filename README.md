@@ -27,8 +27,10 @@ dependencies {
 
 # Screenshot
 ## branch basic:
-<img src="app/src/main/res/drawable/screenshot_click.png" alt="App activity" width="300"/>
+<img src="https://github.com/user-attachments/assets/9b25399c-658b-4df3-990c-93ba6da23c6d" alt="App activity" width="300"/>
 
+## branch main:
+<img src="app/src/main/res/drawable/screenshot_click.png" alt="App activity" width="300"/>
 
 ---
 # References
