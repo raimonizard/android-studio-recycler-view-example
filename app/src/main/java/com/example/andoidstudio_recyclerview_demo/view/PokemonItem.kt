@@ -26,6 +26,7 @@ fun PokemonItem(pokemon: Pokemon, onSelectedItem: (String) -> Unit) {
     Card(border = BorderStroke(2.dp, Color.LightGray),
         modifier = Modifier
             .fillMaxWidth()
+            // Afegir propietat clickable i li definim el comportament
             .clickable { onSelectedItem(pokemon.name) }
     ) {
         Row {
