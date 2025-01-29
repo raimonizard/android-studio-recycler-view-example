@@ -32,6 +32,8 @@ dependencies {
 ## branch main:
 <img src="app/src/main/res/drawable/screenshot_click.png" alt="App activity" width="300"/>
 
+<img src="app/src/main/res/drawable/screenshot_detail_golbat.png" alt="App activity" width="300"/>
+
 ---
 # References
 - [Android Developers](https://developer.android.com/develop/ui/compose/lists?hl=es-419)
