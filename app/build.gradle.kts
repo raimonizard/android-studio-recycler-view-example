@@ -60,6 +60,13 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Necessari per a fer ús de LiveData
+    implementation("androidx.compose.runtime:runtime-livedata:2.6.1")
+
+    // Necessari per a corrutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:2.6.1")
+
     // Necessari per a la persistència de dades amb la llibreria Room
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")

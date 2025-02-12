@@ -11,7 +11,7 @@ interface CharacterDao {
     suspend fun getAllCharacters(): MutableList<Character>
 
     @Query("SELECT * FROM characters WHERE id = :id")
-    suspend fun getCharacterById(id: Int): Character
+    suspend fun getCharacterById(id: Int): MutableList<Character>
 
     @Insert
     suspend fun addCharacter(character: Character)

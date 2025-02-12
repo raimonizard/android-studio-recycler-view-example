@@ -7,6 +7,6 @@ class Repository {
     // Database functions
     suspend fun saveAsFavorite(character: Character) = daoInterface.addCharacter(character)
     suspend fun deleteFavorite(character: Character) = daoInterface.deleteCharacter(character)
-    suspend fun isFavorite(character: Character) = daoInterface.getCharacterById(character.id)
+    suspend fun isFavorite(character: Character) = daoInterface.getCharacterById(character.id).isNotEmpty()
     suspend fun getFavorites() = daoInterface.getAllCharacters()
 }
