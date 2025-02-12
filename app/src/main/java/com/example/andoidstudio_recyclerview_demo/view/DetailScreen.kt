@@ -60,9 +60,10 @@ fun DetailScreen(navController: NavController, pokemonName: String, modifier: Mo
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = "Tipus: ${pokemon.type}",
+                    text = "Tipus: ${pokemon.type.name.lowercase().replaceFirstChar { it.uppercase() }}",
                     fontSize = 20.sp,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Medium,
+                    color = pokemon.type.color
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))

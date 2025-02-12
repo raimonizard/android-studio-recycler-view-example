@@ -44,7 +44,10 @@ fun PokemonItem(pokemon: Pokemon, onSelectedItem: (String) -> Unit) {
                     fontSize = MaterialTheme.typography.bodyLarge.fontSize,
                     fontWeight = FontWeight.Bold
                 )
-                Text(text = pokemon.type.name)
+                Text(
+                    text = pokemon.type.name.lowercase().replaceFirstChar { it.uppercase() },
+                    color = pokemon.type.color,
+                )
             }
         }
     }
