@@ -91,7 +91,7 @@ fun DetailScreen(
                             // Update the database in a coroutine
                             val pokemonToUpdate = pokemon.copy(isFavorite = isFavorite)
                             if (isFavorite) {
-                                db.pokemonDao().insert(pokemonToUpdate)
+                                db.pokemonDao().addFavorite(pokemonToUpdate)
                             } else {
                                 db.pokemonDao().updateFavoriteStatus(pokemonName, isFavorite)
                             }

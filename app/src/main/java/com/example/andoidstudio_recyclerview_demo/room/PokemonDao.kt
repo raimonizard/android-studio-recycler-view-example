@@ -11,13 +11,13 @@ interface PokemonDao {
     fun getAll(): List<Pokemon>
 
     @Query("SELECT * FROM pokemons WHERE name = :name")
-    fun findByName(name: String): Pokemon?
+    fun findByName(name: String): List<Pokemon?>
 
     @Insert
-    fun insert(favoritePokemon: Pokemon)
+    fun addFavorite(favoritePokemon: Pokemon)
 
     @Delete
-    fun delete(favoritePokemon: Pokemon)
+    fun removeFavorite(favoritePokemon: Pokemon)
 
     @Query("UPDATE pokemons SET is_favorite = :isFavorite WHERE name = :name")
     fun updateFavoriteStatus(name: String, isFavorite: Boolean)
