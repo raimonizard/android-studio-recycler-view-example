@@ -3,6 +3,7 @@ package com.example.andoidstudio_recyclerview_demo.viewmodel
 import com.example.andoidstudio_recyclerview_demo.model.Character
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+
 import com.example.andoidstudio_recyclerview_demo.room.Repository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
