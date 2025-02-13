@@ -1,3 +1,4 @@
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -8,7 +9,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,15 +32,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.privacysandbox.tools.core.generator.build
 import androidx.room.Room
 import com.example.andoidstudio_recyclerview_demo.viewmodel.getPokemonList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kotlin.coroutines.jvm.internal.CompletedContinuation.context
+import com.example.andoidstudio_recyclerview_demo.room.PokemonDatabase
 
 @Composable
-fun DetailScreen(navController: NavController, pokemonName: String, modifier: Modifier = Modifier) {
+fun DetailScreen(
+    navController: NavController,
+    pokemonName: String,
+    context: Context, // Context is now a parameter
+    modifier: Modifier = Modifier
+) {
     // Busquem el pokémon per nom dins de la llista usant un for-each amb iterador
     val pokemon = remember { getPokemonList().find { it.name == pokemonName } }
     var isFavorite by remember { mutableStateOf(false) }
@@ -42,8 +52,8 @@ fun DetailScreen(navController: NavController, pokemonName: String, modifier: Mo
     // Initialize the database
     val db = remember {
         Room.databaseBuilder(
-            context,
-            AppDatabase::class.java, "pokemon-database"
+            context, // Use the passed context here
+            PokemonDatabase::class.java, "pokemon-database"
         ).build()
     }
 
@@ -66,14 +76,36 @@ fun DetailScreen(navController: NavController, pokemonName: String, modifier: Mo
             verticalArrangement = Arrangement.Center
         ) {
             if (pokemon != null) {
-                Image(
-                    painter = painterResource(id = pokemon.image),
-                    contentDescription = pokemon.name,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(380.dp)
-                        .clip(CircleShape)
-                )
+                Box(contentAlignment = Alignment.TopEnd, modifier = Modifier.fillMaxSize()) {
+                    Image(
+                        painter = painterResource(id = pokemon.image),
+                        contentDescription = pokemon.name,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(380.dp)
+                            .clip(CircleShape)
+                    )
+                    IconButton(
+                        onClick = {
+                            isFavorite = !isFavorite
+                            // Update the database in a coroutine
+                            val pokemonToUpdate = pokemon.copy(isFavorite = isFavorite)
+                            if (isFavorite) {
+                                db.pokemonDao().insert(pokemonToUpdate)
+                            } else {
+                                db.pokemonDao().updateFavoriteStatus(pokemonName, isFavorite)
+                            }
+                        },
+                        modifier = Modifier.padding(16.dp)
+                    ) {
+                        Icon(
+                            imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+                            contentDescription = "Favorite",
+                            tint = if (isFavorite) Color.Red else Color.Gray,
+                            modifier = Modifier.size(48.dp)
+                        )
+                    }
+                }
 
                 Spacer(modifier = Modifier.height(10.dp))
 
@@ -103,8 +135,7 @@ fun DetailScreen(navController: NavController, pokemonName: String, modifier: Mo
             }
 
             Button(
-                onClick =
-                {   // Quan es cliqui el botó anirà a la pàgina anterior
+                onClick = {
                     navController.popBackStack()
                 },
                 modifier = Modifier.padding(top = 20.dp)
