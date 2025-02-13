@@ -1,10 +1,8 @@
 package com.example.andoidstudio_recyclerview_demo.view
 
 import DetailScreen
-import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -36,7 +34,6 @@ fun MyAppNavHost(modifier: Modifier,
                 navController,
                 // Per si de cas el nom del pokémon és buit, li passarem una cadena de caràcters buida al cridar la view
                 backStackEntry.arguments?.getString("pokemonName").orEmpty(),
-                LocalContext.current,
                 modifier,
                 roomViewModel
             )

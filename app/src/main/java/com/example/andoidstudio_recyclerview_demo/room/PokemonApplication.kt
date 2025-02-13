@@ -20,6 +20,7 @@ class PokemonApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        // Aquí determinem el nom de la base de dades. En el nostre cas "PokemonDatabase"
         database = Room.databaseBuilder(this, PokemonDatabase::class.java,"PokemonDatabase").build()
     }
 }

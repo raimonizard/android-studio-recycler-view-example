@@ -17,7 +17,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
@@ -40,37 +39,20 @@ import com.example.andoidstudio_recyclerview_demo.viewmodel.RoomViewModel
 fun DetailScreen(
     navController: NavController,
     pokemonName: String,
-    context: Context,
     modifier: Modifier = Modifier,
     roomViewModel: RoomViewModel
 ) {
-    // Busquem el pokémon pel nom dins de la llista usant un for-each amb iterador
+    // Busquem el pokémon pel nom dins de la llista live data de allPokemon del ViewModel usant un for-each amb iterador
     val allPokemons: MutableList<Pokemon> by roomViewModel.allPokemon.observeAsState(mutableListOf())
-    val pokemon = remember { allPokemons.find { it.name == pokemonName } }
-
-
-    val isFavorite: Boolean by roomViewModel.isFavorite.observeAsState(false)
+    val pokemon = remember { allPokemons.find { it.name == pokemonName } }!!
 
     // Carregar tots els pokemons favorits dins de la variable favorites del ViewModel
     roomViewModel.getFavorites()
     val favorites: MutableList<Pokemon> by roomViewModel.favorites.observeAsState(mutableListOf())
 
-    /*
-    // Initialize the database
-    val db = remember {
-        Room.databaseBuilder(
-            context, // Use the passed context here
-            PokemonDatabase::class.java, "pokemon-database"
-        ).build()
-    }
-    */
-
-    // Load the favorite status from the database when the screen is first composed
-    LaunchedEffect(pokemon) {
-        withContext(Dispatchers.IO) {
-            roomViewModel.isFavorite(pokemon!!)
-        }
-    }
+    // Executem la funció isFavorite del ViewModel per tal de que consulti si el pokémon escollit era ja favorit abans de clickar-lo
+    roomViewModel.isFavorite(pokemon)
+    val isFavorite: Boolean by roomViewModel.isFavorite.observeAsState(false)
 
     Box(
         modifier = modifier
@@ -94,14 +76,13 @@ fun DetailScreen(
                     )
                     IconButton(
                         onClick = {
-                            //isFavorite = !isFavorite
                             val pokemonToUpdate = pokemon.copy(isFavorite = !isFavorite)
                             if (!isFavorite) {
                                 roomViewModel.saveAsFavorite(pokemonToUpdate)
                             } else {
-                                //db.pokemonDao().updateFavoriteStatus(pokemonName, !isFavorite)
                                 roomViewModel.deleteFavorite(pokemonToUpdate)
                             }
+                            roomViewModel.isFavorite(pokemonToUpdate)
                         },
                         modifier = Modifier.padding(16.dp)
                     ) {
@@ -112,26 +93,26 @@ fun DetailScreen(
                             modifier = Modifier.size(48.dp)
                         )
                     }
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    Text(
+                        text = pokemon.name,
+                        fontSize = 28.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = "Tipus: ${pokemon.type.name.lowercase().replaceFirstChar { it.uppercase() }}",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = pokemon.type.color
+                    )
+
+                    Spacer(modifier = Modifier.height(24.dp))
                 }
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                Text(
-                    text = pokemon.name,
-                    fontSize = 28.sp,
-                    fontWeight = FontWeight.Bold
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Text(
-                    text = "Tipus: ${pokemon.type.name.lowercase().replaceFirstChar { it.uppercase() }}",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = pokemon.type.color
-                )
-
-                Spacer(modifier = Modifier.height(24.dp))
             } else {
                 Text(
                     text = "Pokémon no trobat",
