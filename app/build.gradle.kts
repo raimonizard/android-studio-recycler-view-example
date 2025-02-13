@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.test
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -52,8 +54,32 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.navigation.compose)
+    //implementation 'androidx.navigation:navigation-compose:2.7.5'
     implementation(libs.androidx.navigation.compose)
-    implementation(libs.androidx.room.common)
+
+    // Per a usar persistència de dades amb la llibreria room
+    implementation("androidx.room:room-ktx:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
+
+    //LIVEDATA
+    implementation("androidx.compose.runtime:runtime-livedata:1.6.0")
+
+    //RETROFIT
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.9.3")
+
+    //CORRUTINES
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
+    //GLIDE
+    implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
+    implementation("androidx.compose.material:material:1.6.1")
+    implementation ("androidx.room:room-runtime:2.6.1")
+    implementation ("androidx.compose.material3:material3:1.2.0-alpha02")
+    implementation("com.android.support:support-annotations:28.0.0")
+    annotationProcessor("androidx.room:room-compiler:2.6.1")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -61,15 +87,4 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
-    // Necessari per a fer ús de LiveData
-    implementation("androidx.compose.runtime:runtime-livedata:2.6.1")
-
-    // Necessari per a corrutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:2.6.1")
-
-    // Necessari per a la persistència de dades amb la llibreria Room
-    implementation("androidx.room:room-runtime:2.6.1")
-    implementation("androidx.room:room-ktx:2.6.1")
-    kapt("androidx.room:room-compiler:2.6.1")
 }

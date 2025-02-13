@@ -8,10 +8,10 @@ import com.example.andoidstudio_recyclerview_demo.model.Pokemon
 @Dao
 interface PokemonDao {
     @Query("SELECT * FROM pokemons")
-    fun getAll(): List<Pokemon>
+    fun getAll(): MutableList<Pokemon>
 
     @Query("SELECT * FROM pokemons WHERE name = :name")
-    fun findByName(name: String): List<Pokemon?>
+    fun findByName(name: String): MutableList<Pokemon?>
 
     @Insert
     fun addFavorite(favoritePokemon: Pokemon)

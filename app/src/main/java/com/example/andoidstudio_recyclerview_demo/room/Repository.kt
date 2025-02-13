@@ -8,6 +8,6 @@ class Repository {
     // Database functions
     suspend fun addFavorite(pokemon: Pokemon) = daoInterface.addFavorite(pokemon)
     suspend fun removeFavorite(pokemon: Pokemon) = daoInterface.removeFavorite(pokemon)
-    suspend fun findByName(character: Character) = daoInterface.findByName(character.name).isNotEmpty()
+    suspend fun findByName(pokemon: Pokemon) = daoInterface.findByName(pokemon.name).isNotEmpty()
     suspend fun getFavorites() = daoInterface.getAll()
 }

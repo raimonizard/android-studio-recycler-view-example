@@ -3,6 +3,7 @@ package com.example.andoidstudio_recyclerview_demo.viewmodel
 import com.example.andoidstudio_recyclerview_demo.model.Character
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.andoidstudio_recyclerview_demo.model.Pokemon
 
 import com.example.andoidstudio_recyclerview_demo.room.Repository
 import kotlinx.coroutines.CoroutineScope
@@ -19,7 +20,7 @@ class RoomViewModel : ViewModel(){
     private val _isFavorite = MutableLiveData(false)
     val isFavorite = _isFavorite
 
-    private val _favorites = MutableLiveData<MutableList<Character>>()
+    private val _favorites = MutableLiveData<MutableList<Pokemon>>()
     val favorites = _favorites
 
     fun getFavorites(){
@@ -32,24 +33,24 @@ class RoomViewModel : ViewModel(){
         }
     }
 
-    fun isFavorite(character: Character){
+    fun isFavorite(pokemon: Pokemon){
         CoroutineScope(Dispatchers.IO).launch {
-            val response = repository.isFavorite(character)
+            val response = repository.findByName(pokemon)
             withContext(Dispatchers.Main){
                 _isFavorite.value = response
             }
         }
     }
 
-    fun saveAsFavorite(character: Character){
+    fun saveAsFavorite(pokemon: Pokemon){
         CoroutineScope(Dispatchers.IO).launch {
-            repository.saveAsFavorite(character)
+            repository.addFavorite(pokemon)
         }
     }
 
-    fun deleteFavorite(character: Character){
+    fun deleteFavorite(pokemon: Pokemon){
         CoroutineScope(Dispatchers.IO).launch {
-            repository.deleteFavorite(character)
+            repository.removeFavorite(pokemon)
         }
     }
 

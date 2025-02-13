@@ -61,7 +61,10 @@ fun DetailScreen(
     LaunchedEffect(pokemonName) {
         withContext(Dispatchers.IO) {
             val pokemonFromDb = db.pokemonDao().findByName(pokemonName)
-            isFavorite = pokemonFromDb?.isFavorite ?: false
+            if (pokemonFromDb.isNotEmpty())
+                isFavorite = pokemonFromDb?.get(0)!!.isFavorite ?: false
+            else
+                isFavorite = false
         }
     }
 
