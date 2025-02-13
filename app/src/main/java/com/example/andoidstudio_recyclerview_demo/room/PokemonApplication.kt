@@ -10,7 +10,7 @@ import androidx.room.Room
  * que només se'n crea un objecte. Aquest objecte únic és global i accessible areu del programa.
  * És útil per a gestionar recursos compartits com per exemple una connexió a BD, una API, etc.
  *
- * S'executarà només començar l'aplicació ja que està dins de AndroidManifest.xml
+ * S'executarà només començar l'aplicació ja que està dins de AndroidManifest.xml i crearà la BD
  */
 class PokemonApplication : Application() {
     // Creem un atribut estàtic de la classe
@@ -20,6 +20,6 @@ class PokemonApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        database = Room.databaseBuilder(this, PokemonDatabase::class.java,"CharacterDatabase").build()
+        database = Room.databaseBuilder(this, PokemonDatabase::class.java,"PokemonDatabase").build()
     }
 }

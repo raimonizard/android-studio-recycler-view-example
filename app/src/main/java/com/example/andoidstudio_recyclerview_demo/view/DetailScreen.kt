@@ -19,9 +19,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,23 +31,31 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.room.Room
-import com.example.andoidstudio_recyclerview_demo.viewmodel.getPokemonList
+import com.example.andoidstudio_recyclerview_demo.model.Pokemon
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import com.example.andoidstudio_recyclerview_demo.room.PokemonDatabase
+import com.example.andoidstudio_recyclerview_demo.viewmodel.RoomViewModel
 
 @Composable
 fun DetailScreen(
     navController: NavController,
     pokemonName: String,
-    context: Context, // Context is now a parameter
-    modifier: Modifier = Modifier
+    context: Context,
+    modifier: Modifier = Modifier,
+    roomViewModel: RoomViewModel
 ) {
-    // Busquem el pokémon per nom dins de la llista usant un for-each amb iterador
-    val pokemon = remember { getPokemonList().find { it.name == pokemonName } }
-    var isFavorite by remember { mutableStateOf(false) }
+    // Busquem el pokémon pel nom dins de la llista usant un for-each amb iterador
+    val allPokemons: MutableList<Pokemon> by roomViewModel.allPokemon.observeAsState(mutableListOf())
+    val pokemon = remember { allPokemons.find { it.name == pokemonName } }
 
+
+    val isFavorite: Boolean by roomViewModel.isFavorite.observeAsState(false)
+
+    // Carregar tots els pokemons favorits dins de la variable favorites del ViewModel
+    roomViewModel.getFavorites()
+    val favorites: MutableList<Pokemon> by roomViewModel.favorites.observeAsState(mutableListOf())
+
+    /*
     // Initialize the database
     val db = remember {
         Room.databaseBuilder(
@@ -56,15 +63,12 @@ fun DetailScreen(
             PokemonDatabase::class.java, "pokemon-database"
         ).build()
     }
+    */
 
     // Load the favorite status from the database when the screen is first composed
-    LaunchedEffect(pokemonName) {
+    LaunchedEffect(pokemon) {
         withContext(Dispatchers.IO) {
-            val pokemonFromDb = db.pokemonDao().findByName(pokemonName)
-            if (pokemonFromDb.isNotEmpty())
-                isFavorite = pokemonFromDb?.get(0)!!.isFavorite ?: false
-            else
-                isFavorite = false
+            roomViewModel.isFavorite(pokemon!!)
         }
     }
 
@@ -90,13 +94,13 @@ fun DetailScreen(
                     )
                     IconButton(
                         onClick = {
-                            isFavorite = !isFavorite
-                            // Update the database in a coroutine
-                            val pokemonToUpdate = pokemon.copy(isFavorite = isFavorite)
-                            if (isFavorite) {
-                                db.pokemonDao().addFavorite(pokemonToUpdate)
+                            //isFavorite = !isFavorite
+                            val pokemonToUpdate = pokemon.copy(isFavorite = !isFavorite)
+                            if (!isFavorite) {
+                                roomViewModel.saveAsFavorite(pokemonToUpdate)
                             } else {
-                                db.pokemonDao().updateFavoriteStatus(pokemonName, isFavorite)
+                                //db.pokemonDao().updateFavoriteStatus(pokemonName, !isFavorite)
+                                roomViewModel.deleteFavorite(pokemonToUpdate)
                             }
                         },
                         modifier = Modifier.padding(16.dp)
