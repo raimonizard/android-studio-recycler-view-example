@@ -11,7 +11,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,12 +26,34 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.privacysandbox.tools.core.generator.build
+import androidx.room.Room
 import com.example.andoidstudio_recyclerview_demo.viewmodel.getPokemonList
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import kotlin.coroutines.jvm.internal.CompletedContinuation.context
 
 @Composable
 fun DetailScreen(navController: NavController, pokemonName: String, modifier: Modifier = Modifier) {
     // Busquem el pokémon per nom dins de la llista usant un for-each amb iterador
     val pokemon = remember { getPokemonList().find { it.name == pokemonName } }
+    var isFavorite by remember { mutableStateOf(false) }
+
+    // Initialize the database
+    val db = remember {
+        Room.databaseBuilder(
+            context,
+            AppDatabase::class.java, "pokemon-database"
+        ).build()
+    }
+
+    // Load the favorite status from the database when the screen is first composed
+    LaunchedEffect(pokemonName) {
+        withContext(Dispatchers.IO) {
+            val pokemonFromDb = db.pokemonDao().findByName(pokemonName)
+            isFavorite = pokemonFromDb?.isFavorite ?: false
+        }
+    }
 
     Box(
         modifier = modifier

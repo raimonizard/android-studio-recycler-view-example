@@ -6,7 +6,7 @@
 
     <application
 
-        android:name=".room.CharacterApplication"
+        android:name=".room.PokemonApplication"
 
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"

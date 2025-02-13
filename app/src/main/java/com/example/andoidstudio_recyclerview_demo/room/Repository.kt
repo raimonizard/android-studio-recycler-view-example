@@ -2,7 +2,7 @@ package com.example.andoidstudio_recyclerview_demo.room
 import com.example.andoidstudio_recyclerview_demo.model.Character
 
 class Repository {
-    val daoInterface = CharacterApplication.database.characterDao()
+    val daoInterface = PokemonApplication.database.characterDao()
 
     // Database functions
     suspend fun saveAsFavorite(character: Character) = daoInterface.addCharacter(character)

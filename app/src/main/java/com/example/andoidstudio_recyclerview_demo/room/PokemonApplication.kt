@@ -9,15 +9,17 @@ import androidx.room.Room
  * Això s'anomena patró Singleton (que vol dir solitari o únic) i fa referència a
  * que només se'n crea un objecte. Aquest objecte únic és global i accessible areu del programa.
  * És útil per a gestionar recursos compartits com per exemple una connexió a BD, una API, etc.
+ *
+ * S'executarà només començar l'aplicació ja que està dins de AndroidManifest.xml
  */
-class CharacterApplication : Application() {
+class PokemonApplication : Application() {
     // Creem un atribut estàtic de la classe
     companion object {
-        lateinit var database: CharacterDatabase
+        lateinit var database: PokemonDatabase
     }
 
     override fun onCreate() {
         super.onCreate()
-        database = Room.databaseBuilder(this, CharacterDatabase::class.java,"CharacterDatabase").build()
+        database = Room.databaseBuilder(this, PokemonDatabase::class.java,"CharacterDatabase").build()
     }
 }
