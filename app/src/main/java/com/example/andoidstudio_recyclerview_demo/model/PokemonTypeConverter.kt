@@ -1,7 +1,6 @@
-package com.example.andoidstudio_recyclerview_demo.room
+package com.example.andoidstudio_recyclerview_demo.model
 
 import androidx.room.TypeConverter
-import com.example.andoidstudio_recyclerview_demo.model.PokemonType
 
 class PokemonTypeConverter {
     @TypeConverter
