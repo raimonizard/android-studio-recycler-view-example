@@ -1,10 +1,11 @@
-import android.content.Context
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -54,82 +55,97 @@ fun DetailScreen(
     roomViewModel.isFavorite(pokemon)
     val isFavorite: Boolean by roomViewModel.isFavorite.observeAsState(false)
 
-    Box(
+    Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(1.dp),
-        contentAlignment = Alignment.Center
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            if (pokemon != null) {
-                Box(contentAlignment = Alignment.TopEnd, modifier = Modifier.fillMaxSize()) {
-                    Image(
-                        painter = painterResource(id = pokemon.image),
-                        contentDescription = pokemon.name,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .size(380.dp)
-                            .clip(CircleShape)
-                    )
-                    IconButton(
-                        onClick = {
-                            val pokemonToUpdate = pokemon.copy(isFavorite = !isFavorite)
-                            if (!isFavorite) {
-                                roomViewModel.saveAsFavorite(pokemonToUpdate)
-                            } else {
-                                roomViewModel.deleteFavorite(pokemonToUpdate)
-                            }
-                            roomViewModel.isFavorite(pokemonToUpdate)
-                        },
-                        modifier = Modifier.padding(16.dp)
-                    ) {
-                        Icon(
-                            imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
-                            contentDescription = "Favorite",
-                            tint = if (isFavorite) Color.Red else Color.Gray,
-                            modifier = Modifier.size(48.dp)
+        if (pokemon != null) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f), // Take up available space
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    painter = painterResource(id = pokemon.image),
+                    contentDescription = pokemon.name,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .border(
+                            width = if (isFavorite) 2.dp else 0.dp,
+                            color = pokemon.type.color,
+                            shape = CircleShape
                         )
-                    }
-
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    Text(
-                        text = pokemon.name,
-                        fontSize = 28.sp,
-                        fontWeight = FontWeight.Bold
+                )
+                IconButton(
+                    onClick = {
+                        val pokemonToUpdate = pokemon.copy(isFavorite = !isFavorite)
+                        roomViewModel.isFavorite(pokemonToUpdate)
+                        if (!isFavorite) {
+                            roomViewModel.saveAsFavorite(pokemonToUpdate)
+                        } else {
+                            roomViewModel.deleteFavorite(pokemonToUpdate)
+                        }
+                        roomViewModel.isFavorite(pokemonToUpdate)
+                    },
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .align(Alignment.TopEnd)
+                ) {
+                    Icon(
+                        imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+                        contentDescription = "Favorite",
+                        tint = if (isFavorite) Color.Red else Color.Gray,
+                        modifier = Modifier.size(48.dp)
                     )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    Text(
-                        text = "Tipus: ${pokemon.type.name.lowercase().replaceFirstChar { it.uppercase() }}",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = pokemon.type.color
-                    )
-
-                    Spacer(modifier = Modifier.height(24.dp))
                 }
-            } else {
+            }
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+                Spacer(modifier = Modifier.height(24.dp))
+
                 Text(
-                    text = "Pokémon no trobat",
-                    fontSize = 22.sp,
-                    color = Color.Red,
+                    text = pokemon.name,
+                    fontSize = 28.sp,
                     fontWeight = FontWeight.Bold
                 )
-            }
 
-            Button(
-                onClick = {
-                    navController.popBackStack()
-                },
-                modifier = Modifier.padding(top = 20.dp)
-            ) {
-                Text("Tornar enrere")
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    text = "Tipus: ${
+                        pokemon.type.name.lowercase().replaceFirstChar { it.uppercase() }
+                    }",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = pokemon.type.color
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
             }
+        } else {
+            Text(
+                text = "Pokémon no trobat",
+                fontSize = 22.sp,
+                color = Color.Red,
+                fontWeight = FontWeight.Bold
+            )
+        }
+
+        Button(
+            onClick = {
+                navController.popBackStack()
+            },
+            modifier = Modifier.padding(top = 20.dp)
+        ) {
+            Text("Tornar enrere")
         }
     }
 }

@@ -24,6 +24,10 @@ fun MyAppNavHost(modifier: Modifier,
             LazyColumnPokedex(modifier, navController, roomViewModel)
         }
 
+        composable(Routes.LlistatFavPokemon.route){
+            FavouritesScreen(modifier, navController, roomViewModel)
+        }
+
         composable(
             Routes.DetailScreen.route,
             arguments = listOf(
