@@ -25,7 +25,7 @@ fun MyAppNavHost(modifier: Modifier,
         }
 
         composable(Routes.LlistatFavPokemon.route){
-            FavouritesScreen(modifier, navController, roomViewModel)
+            FavoritesScreen(modifier, navController, roomViewModel)
         }
 
         composable(
