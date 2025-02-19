@@ -18,10 +18,14 @@ fun MyAppNavHost(modifier: Modifier,
                  ) {
     NavHost(
         navController = navController,
-        startDestination = Routes.LlistatPokedex.route
+        startDestination = Routes.SplashScreen.route
     ) {
+        composable(Routes.SplashScreen.route){
+            SplashScreen(navController)
+        }
+
         composable(Routes.LlistatPokedex.route) {
-            LazyColumnPokedex(modifier, navController, roomViewModel)
+            LazyColumnPokedex(navController, roomViewModel)
         }
 
         composable(Routes.LlistatFavPokemon.route){

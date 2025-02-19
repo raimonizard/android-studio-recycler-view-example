@@ -19,7 +19,7 @@ import com.example.andoidstudio_recyclerview_demo.nav.Routes
 import com.example.andoidstudio_recyclerview_demo.viewmodel.RoomViewModel
 
 @Composable
-fun LazyColumnPokedex(modifier: Modifier, navController: NavController, roomViewModel: RoomViewModel){
+fun LazyColumnPokedex(navController: NavController, roomViewModel: RoomViewModel){
     roomViewModel.getPokemonList()
     val allPokemons: MutableList<Pokemon> by roomViewModel.allPokemon.observeAsState(mutableListOf())
 
