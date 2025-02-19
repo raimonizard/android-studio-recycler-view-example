@@ -63,15 +63,24 @@ class RoomViewModel : ViewModel(){
         }
     }
 
-    fun saveAsFavorite(pokemon: Pokemon){
+    fun saveAsFavorite(pokemon: Pokemon, onComplete: () -> Unit){
         CoroutineScope(Dispatchers.IO).launch {
             repository.addFavorite(pokemon)
+            getFavorites()
+            withContext(Dispatchers.Main) {
+                _isFavorite.value = true
+                onComplete()
+            }
         }
     }
 
     fun deleteFavorite(pokemon: Pokemon){
         CoroutineScope(Dispatchers.IO).launch {
             repository.removeFavorite(pokemon)
+            getFavorites()
+            withContext(Dispatchers.Main){
+                _isFavorite.value = false
+            }
         }
     }
 

@@ -1,5 +1,7 @@
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,9 +20,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,6 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.andoidstudio_recyclerview_demo.R
 import com.example.andoidstudio_recyclerview_demo.model.Pokemon
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -43,9 +49,12 @@ fun DetailScreen(
     modifier: Modifier = Modifier,
     roomViewModel: RoomViewModel
 ) {
+    /*
     // Busquem el pokémon pel nom dins de la llista live data de allPokemon del ViewModel usant un for-each amb iterador
     val allPokemons: MutableList<Pokemon> by roomViewModel.allPokemon.observeAsState(mutableListOf())
     val pokemon = remember { allPokemons.find { it.name == pokemonName } }!!
+
+    var isCatchingPokemon by remember { mutableStateOf(false) }
 
     // Carregar tots els pokemons favorits dins de la variable favorites del ViewModel
     roomViewModel.getFavorites()
@@ -54,6 +63,23 @@ fun DetailScreen(
     // Executem la funció isFavorite del ViewModel per tal de que consulti si el pokémon escollit era ja favorit abans de clickar-lo
     roomViewModel.isFavorite(pokemon)
     val isFavorite: Boolean by roomViewModel.isFavorite.observeAsState(false)
+    */
+
+    val allPokemons by roomViewModel.allPokemon.observeAsState(mutableListOf())
+    val favorites by roomViewModel.favorites.observeAsState(mutableListOf())
+    val isFavorite by roomViewModel.isFavorite.observeAsState(false)
+
+    // Buscar el Pokémon pel nom
+    val pokemon = allPokemons.find { it.name == pokemonName }
+
+    var isCatchingPokemon by remember { mutableStateOf(false) }
+
+    // Cridem només una vegada quan `pokemon` canvia
+    LaunchedEffect(pokemon) {
+        pokemon?.let {
+            roomViewModel.isFavorite(it)
+        }
+    }
 
     Column(
         modifier = modifier
@@ -81,28 +107,26 @@ fun DetailScreen(
                             shape = CircleShape
                         )
                 )
-                IconButton(
-                    onClick = {
-                        val pokemonToUpdate = pokemon.copy(isFavorite = !isFavorite)
-                        roomViewModel.isFavorite(pokemonToUpdate)
-                        if (!isFavorite) {
-                            roomViewModel.saveAsFavorite(pokemonToUpdate)
-                        } else {
-                            roomViewModel.deleteFavorite(pokemonToUpdate)
-                        }
-                        roomViewModel.isFavorite(pokemonToUpdate)
-                    },
+// Substituïm l'Icon per una imatge PNG
+                Image(
+                    painter = painterResource(id = if (isFavorite) R.drawable.pokeball else R.drawable.pokeball_bw),
+                    contentDescription = "Favorite",
                     modifier = Modifier
-                        .padding(16.dp)
+                        .size(48.dp)
                         .align(Alignment.TopEnd)
-                ) {
-                    Icon(
-                        imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
-                        contentDescription = "Favorite",
-                        tint = if (isFavorite) Color.Red else Color.Gray,
-                        modifier = Modifier.size(48.dp)
-                    )
-                }
+                        .clickable(enabled = !isCatchingPokemon) {
+                            isCatchingPokemon = true
+                            val pokemonToUpdate = pokemon.copy(isFavorite = !isFavorite)
+                            if (!isFavorite) {
+                                roomViewModel.saveAsFavorite(pokemonToUpdate) {
+                                    isCatchingPokemon = false
+                                }
+                            } else {
+                                roomViewModel.deleteFavorite(pokemonToUpdate)
+                                isCatchingPokemon = false
+                            }
+                        }
+                )
             }
             Column(
                 modifier = Modifier.fillMaxWidth(),
