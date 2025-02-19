@@ -61,6 +61,8 @@ dependencies {
     implementation("androidx.room:room-ktx:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1")
 
+    implementation("androidx.compose.animation:animation:1.6.0") // Assegura't que la versió és compatible
+
     //LIVEDATA
     implementation("androidx.compose.runtime:runtime-livedata:1.6.0")
 

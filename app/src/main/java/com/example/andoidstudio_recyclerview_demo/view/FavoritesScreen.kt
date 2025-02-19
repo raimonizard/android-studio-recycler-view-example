@@ -37,8 +37,8 @@ fun FavoritesScreen(
 
         val showLoading: Boolean by roomViewModel.loading.observeAsState(true)
 
-        val favPokemon: MutableList<Pokemon> by roomViewModel.favorites.observeAsState(mutableListOf())
-        roomViewModel.getFavorites()
+        val favPokemon: MutableList<Pokemon> by roomViewModel.captured.observeAsState(mutableListOf())
+        roomViewModel.getCaptured()
 
         if (showLoading) {
             CircularProgressIndicator(

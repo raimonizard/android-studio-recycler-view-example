@@ -18,11 +18,11 @@ class RoomViewModel : ViewModel(){
     private val _loading = MutableLiveData(true)
     val loading = _loading
 
-    private val _isFavorite = MutableLiveData(false)
-    val isFavorite = _isFavorite
+    private val _isCaptured = MutableLiveData(false)
+    val isCaptured = _isCaptured
 
-    private val _favorites = MutableLiveData<MutableList<Pokemon>>()
-    val favorites = _favorites
+    private val _captured = MutableLiveData<MutableList<Pokemon>>()
+    val captured = _captured
 
     private val _allPokemon = MutableLiveData<MutableList<Pokemon>>()
     val allPokemon = _allPokemon
@@ -44,42 +44,42 @@ class RoomViewModel : ViewModel(){
         _allPokemon.value = pokedex
     }
 
-    fun getFavorites(){
+    fun getCaptured(){
         CoroutineScope(Dispatchers.IO).launch {
             val response = repository.getFavorites()
             withContext(Dispatchers.Main){
-                _favorites.value = response
+                _captured.value = response
                 _loading.value = false
             }
         }
     }
 
-    fun isFavorite(pokemon: Pokemon){
+    fun isCaptured(pokemon: Pokemon){
         CoroutineScope(Dispatchers.IO).launch {
             val response = repository.isFavorite(pokemon.name)
             withContext(Dispatchers.Main){
-                _isFavorite.value = response
+                _isCaptured.value = response
             }
         }
     }
 
-    fun saveAsFavorite(pokemon: Pokemon, onComplete: () -> Unit){
+    fun saveAsCaptured(pokemon: Pokemon, onComplete: () -> Unit){
         CoroutineScope(Dispatchers.IO).launch {
             repository.addFavorite(pokemon)
-            getFavorites()
+            getCaptured()
             withContext(Dispatchers.Main) {
-                _isFavorite.value = true
+                _isCaptured.value = true
                 onComplete()
             }
         }
     }
 
-    fun deleteFavorite(pokemon: Pokemon){
+    fun deleteCaptured(pokemon: Pokemon){
         CoroutineScope(Dispatchers.IO).launch {
             repository.removeFavorite(pokemon)
-            getFavorites()
+            getCaptured()
             withContext(Dispatchers.Main){
-                _isFavorite.value = false
+                _isCaptured.value = false
             }
         }
     }

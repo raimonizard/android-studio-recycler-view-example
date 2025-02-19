@@ -66,8 +66,8 @@ fun DetailScreen(
     */
 
     val allPokemons by roomViewModel.allPokemon.observeAsState(mutableListOf())
-    val favorites by roomViewModel.favorites.observeAsState(mutableListOf())
-    val isFavorite by roomViewModel.isFavorite.observeAsState(false)
+    val favorites by roomViewModel.captured.observeAsState(mutableListOf())
+    val isFavorite by roomViewModel.isCaptured.observeAsState(false)
 
     // Buscar el Pokémon pel nom
     val pokemon = allPokemons.find { it.name == pokemonName }
@@ -77,7 +77,7 @@ fun DetailScreen(
     // Cridem només una vegada quan `pokemon` canvia
     LaunchedEffect(pokemon) {
         pokemon?.let {
-            roomViewModel.isFavorite(it)
+            roomViewModel.isCaptured(it)
         }
     }
 
@@ -118,11 +118,11 @@ fun DetailScreen(
                             isCatchingPokemon = true
                             val pokemonToUpdate = pokemon.copy(isFavorite = !isFavorite)
                             if (!isFavorite) {
-                                roomViewModel.saveAsFavorite(pokemonToUpdate) {
+                                roomViewModel.saveAsCaptured(pokemonToUpdate) {
                                     isCatchingPokemon = false
                                 }
                             } else {
-                                roomViewModel.deleteFavorite(pokemonToUpdate)
+                                roomViewModel.deleteCaptured(pokemonToUpdate)
                                 isCatchingPokemon = false
                             }
                         }
