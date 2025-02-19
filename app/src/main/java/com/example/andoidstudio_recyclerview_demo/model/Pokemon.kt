@@ -14,5 +14,5 @@ data class Pokemon(
     val type: PokemonType,
     // És de tipus Int perquè internament Android Studio assigna un valor enter a cada element drawable
     @DrawableRes val image: Int,
-    @ColumnInfo(name = "is_favorite") var isFavorite: Boolean = false
+    @ColumnInfo(name = "is_favorite") var isCaptured: Boolean = false
 )
