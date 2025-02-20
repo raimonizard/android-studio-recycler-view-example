@@ -12,15 +12,16 @@ import com.example.andoidstudio_recyclerview_demo.nav.Routes
 import com.example.andoidstudio_recyclerview_demo.viewmodel.RoomViewModel
 
 @Composable
-fun MyAppNavHost(modifier: Modifier,
-                 navController: NavHostController,
-                 roomViewModel: RoomViewModel
-                 ) {
+fun MyAppNavHost(
+    modifier: Modifier,
+    navController: NavHostController,
+    roomViewModel: RoomViewModel
+) {
     NavHost(
         navController = navController,
         startDestination = Routes.SplashScreen.route
     ) {
-        composable(Routes.SplashScreen.route){
+        composable(Routes.SplashScreen.route) {
             SplashScreen(navController)
         }
 
@@ -28,7 +29,7 @@ fun MyAppNavHost(modifier: Modifier,
             LazyColumnPokedex(navController, roomViewModel)
         }
 
-        composable(Routes.LlistatFavPokemon.route){
+        composable(Routes.LlistatFavPokemon.route) {
             FavoritesScreen(modifier, navController, roomViewModel)
         }
 

@@ -39,25 +39,9 @@ fun DetailScreen(
     modifier: Modifier = Modifier,
     roomViewModel: RoomViewModel
 ) {
-    /*
-    // Busquem el pokémon pel nom dins de la llista live data de allPokemon del ViewModel usant un for-each amb iterador
-    val allPokemons: MutableList<Pokemon> by roomViewModel.allPokemon.observeAsState(mutableListOf())
-    val pokemon = remember { allPokemons.find { it.name == pokemonName } }!!
-
-    var isCatchingPokemon by remember { mutableStateOf(false) }
-
-    // Carregar tots els pokemons favorits dins de la variable favorites del ViewModel
-    roomViewModel.getFavorites()
-    val favorites: MutableList<Pokemon> by roomViewModel.favorites.observeAsState(mutableListOf())
-
-    // Executem la funció isFavorite del ViewModel per tal de que consulti si el pokémon escollit era ja favorit abans de clickar-lo
-    roomViewModel.isFavorite(pokemon)
-    val isFavorite: Boolean by roomViewModel.isFavorite.observeAsState(false)
-    */
-
     val allPokemons by roomViewModel.allPokemon.observeAsState(mutableListOf())
-    val favorites by roomViewModel.captured.observeAsState(mutableListOf())
-    val isFavorite by roomViewModel.isCaptured.observeAsState(false)
+    //val captured by roomViewModel.captured.observeAsState(mutableListOf())
+    val isCaptured by roomViewModel.isCaptured.observeAsState(false)
 
     // Buscar el Pokémon pel nom
     val pokemon = allPokemons.find { it.name == pokemonName }
@@ -92,26 +76,27 @@ fun DetailScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .border(
-                            width = if (isFavorite) 2.dp else 0.dp,
+                            width = if (isCaptured) 2.dp else 0.dp,
                             color = pokemon.type.color,
                             shape = CircleShape
                         )
                 )
                 Image(
-                    painter = painterResource(id = if (isFavorite) R.drawable.pokeball else R.drawable.pokeball_bw),
+                    painter = painterResource(id = if (isCaptured) R.drawable.pokeball else R.drawable.pokeball_bw),
                     contentDescription = "Captured",
                     modifier = Modifier
                         .size(48.dp)
                         .align(Alignment.TopEnd)
                         .clickable(enabled = !isCatchingPokemon) {
                             isCatchingPokemon = true
-                            val pokemonToUpdate = pokemon.copy(isCaptured = !isFavorite)
-                            if (!isFavorite) {
-                                roomViewModel.saveAsCaptured(pokemonToUpdate) {
+                            // Fem una còpia del Pokémon a capturar o alliberar ja que no li podem canviar el valor d'un atribut des de la View
+                            val pokemonToUpdate = pokemon.copy(isCaptured = !isCaptured)
+                            if (!isCaptured) {
+                                roomViewModel.capturePokemon(pokemonToUpdate) {
                                     isCatchingPokemon = false
                                 }
                             } else {
-                                roomViewModel.deleteCaptured(pokemonToUpdate)
+                                roomViewModel.freePokemon(pokemonToUpdate)
                                 isCatchingPokemon = false
                             }
                         }

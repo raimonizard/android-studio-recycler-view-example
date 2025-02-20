@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import com.example.andoidstudio_recyclerview_demo.R
 import com.example.andoidstudio_recyclerview_demo.model.Pokemon
 import com.example.andoidstudio_recyclerview_demo.model.PokemonType
-
 import com.example.andoidstudio_recyclerview_demo.room.Repository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,6 +26,9 @@ class RoomViewModel : ViewModel(){
     private val _allPokemon = MutableLiveData<MutableList<Pokemon>>()
     val allPokemon = _allPokemon
 
+    private val _isCatchingPokemon = MutableLiveData(false)
+    val isCatchingPokemon = _isCatchingPokemon
+
     fun getPokemonList(){
         val pokedex: MutableList<Pokemon> = mutableListOf()
 
@@ -46,7 +48,7 @@ class RoomViewModel : ViewModel(){
 
     fun getCaptured(){
         CoroutineScope(Dispatchers.IO).launch {
-            val response = repository.getFavorites()
+            val response = repository.getCaptured()
             withContext(Dispatchers.Main){
                 _captured.value = response
                 _loading.value = false
@@ -56,16 +58,16 @@ class RoomViewModel : ViewModel(){
 
     fun isCaptured(pokemon: Pokemon){
         CoroutineScope(Dispatchers.IO).launch {
-            val response = repository.isFavorite(pokemon.name)
+            val response = repository.isCaptured(pokemon.name)
             withContext(Dispatchers.Main){
                 _isCaptured.value = response
             }
         }
     }
 
-    fun saveAsCaptured(pokemon: Pokemon, onComplete: () -> Unit){
+    fun capturePokemon(pokemon: Pokemon, onComplete: () -> Unit){
         CoroutineScope(Dispatchers.IO).launch {
-            repository.addFavorite(pokemon)
+            repository.capturePokemon(pokemon)
             getCaptured()
             withContext(Dispatchers.Main) {
                 _isCaptured.value = true
@@ -74,9 +76,9 @@ class RoomViewModel : ViewModel(){
         }
     }
 
-    fun deleteCaptured(pokemon: Pokemon){
+    fun freePokemon(pokemon: Pokemon){
         CoroutineScope(Dispatchers.IO).launch {
-            repository.removeFavorite(pokemon)
+            repository.freePokemon(pokemon)
             getCaptured()
             withContext(Dispatchers.Main){
                 _isCaptured.value = false
