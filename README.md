@@ -6,11 +6,19 @@ Android Studio Ladybug Feature Drop | 2024.2.2
 Kotlin with JetPack Compose
 
 ## Purpose
-This app is a demo of the use of **Lazy Components**.
+This purpose of the main branch is a demo of the use of **Lazy Components**.
+Other branches have further functionallities.
 
 ## Branch
-- Currently the branch `basic` is fully functional and it can be used in order to test different Lazy Components situations.
-
+- Branch `basic` is fully functional and it can be used in order to test different Lazy Components situations.
+- Branch `detail-and-room` is fully functional and it can be used in order to play the game of cath'em all by adding pokemons to the pokédex using the pokéball placed in the DetailScreen. It contains:
+    - Lazy Composables
+    - Responsive clauses such as mediaqueries for screen size
+    - LiveData
+    - MVVM pattern
+    - Navigation Routes
+    - Retrofit library in order to consume API REST
+    - Room library with a SQLLite database
 ---
 
 # Gradle dependencies
