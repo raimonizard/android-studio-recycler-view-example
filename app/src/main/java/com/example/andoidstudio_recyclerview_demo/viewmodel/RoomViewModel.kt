@@ -76,12 +76,13 @@ class RoomViewModel : ViewModel(){
         }
     }
 
-    fun freePokemon(pokemon: Pokemon){
+    fun freePokemon(pokemon: Pokemon, onComplete: () -> Unit){
         CoroutineScope(Dispatchers.IO).launch {
             repository.freePokemon(pokemon)
             getCaptured()
             withContext(Dispatchers.Main){
                 _isCaptured.value = false
+                onComplete()
             }
         }
     }

@@ -96,8 +96,9 @@ fun DetailScreen(
                                     isCatchingPokemon = false
                                 }
                             } else {
-                                roomViewModel.freePokemon(pokemonToUpdate)
-                                isCatchingPokemon = false
+                                roomViewModel.freePokemon(pokemonToUpdate) {
+                                    isCatchingPokemon = false
+                                }
                             }
                         }
                 )
